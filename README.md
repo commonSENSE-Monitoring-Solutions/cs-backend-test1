@@ -9,3 +9,10 @@ Your task is to write an application to migrate data from the `user` table to th
 3. Testing (both unit and integration)
 
 You may use any frameworks or libraries you feel appropriate, however we recommend [Gorm](https://gorm.io) for interacting with the database and [Stretchr Testify](https://github.com/stretchr/testify) for testing.
+
+## Submission
+
+To submit your work, pull this repository and create a new branch with your name (e.g. `john_smith`). When you are ready to submit your work, create a pull request from your branch to the main branch. In the description of the pull request, please include the following information:
+
+* Full Name
+* Email Address that you applied for the position with (or the email address you included in your C.V.)
