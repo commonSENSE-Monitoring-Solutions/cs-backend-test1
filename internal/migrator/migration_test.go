@@ -18,27 +18,19 @@ type MockDB struct {
 	migratedUsersCount atomic.Uint64
 }
 
-func (db *MockDB) SetMigrator(migrator storage.Migrator) {}
+func (db *MockDB) DeleteAll() error { return nil }
 
-func (db *MockDB) SyncSchema(schema interface{}) error {
-	return nil
-}
+func (db *MockDB) MigrateSchema(interface{}) error { return nil }
 
-func (db *MockDB) MigrateWithDataBatches(dest storage.Storage, records interface{}, size int) error {
-	return nil
-}
+func (db *MockDB) SetMigrator(storage.Migrator) {}
 
-func (db *MockDB) IsSessionActive() bool {
-	return true
-}
+func (db *MockDB) MigrateDataBatches(storage.Storage, interface{}, int) error { return nil }
 
-func (db *MockDB) Close() error {
-	return nil
-}
+func (db *MockDB) IsSessionActive() bool { return true }
 
-func (db *MockDB) OpenWithConfig(cfg *config.Database) error {
-	return nil
-}
+func (db *MockDB) Close() error { return nil }
+
+func (db *MockDB) OpenWithConfig(*config.Database) error { return nil }
 
 func (db *MockDB) ReadAll(dest interface{}) error {
 	args := db.Called(dest)
