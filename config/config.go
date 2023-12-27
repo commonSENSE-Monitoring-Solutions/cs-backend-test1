@@ -13,8 +13,13 @@ type Database struct {
 	Password string `env:"POSTGRES_PASSWORD"`
 }
 
+type Logger struct {
+	LogLevel int8 `env:"LOG_LEVEL"`
+}
+
 type Config struct {
-	Db Database
+	Db     Database
+	Logger Logger
 }
 
 func LoadAndParse() (*Config, error) {
