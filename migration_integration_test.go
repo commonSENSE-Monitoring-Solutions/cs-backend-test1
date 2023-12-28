@@ -7,13 +7,15 @@ import (
 	"cs-backend-test1/internal/model"
 	"cs-backend-test1/internal/storage"
 	"github.com/rs/zerolog"
-	"github.com/rs/zerolog/log"
+	"github.com/stretchr/testify/assert"
+	"testing"
 )
 
-func main() {
+func Test_Migrator(t *testing.T) {
 	cfg, err := config.LoadAndParse()
 	if err != nil {
-		log.Fatal().Err(err).Send()
+		assert.NoError(t, err)
+		return
 	}
 
 	zerolog.SetGlobalLevel(zerolog.Level(cfg.Logger.LogLevel))
@@ -22,19 +24,26 @@ func main() {
 	m := migrator.NewUserMigrator(userConverter)
 
 	sourceStorage := storage.NewDatabase("cs_old", &model.User{})
-	if err = sourceStorage.OpenWithConfig(&cfg.Db); err != nil {
-		log.Fatal().Err(err).Send()
+	err = sourceStorage.OpenWithConfig(&cfg.Db)
+	if err != nil {
+		assert.NoError(t, err)
 	}
 	sourceStorage.SetMigrator(m)
 
 	destStorage := storage.NewDatabase("cs_new", &model.UserAccount{})
-	if err = destStorage.OpenWithConfig(&cfg.Db); err != nil {
-		log.Fatal().Err(err).Send()
+	err = destStorage.OpenWithConfig(&cfg.Db)
+	if err != nil {
+		assert.NoError(t, err)
+		return
+	}
+
+	err = destStorage.DeleteAll()
+	if err != nil {
+		assert.NoError(t, err)
+		return
 	}
 
 	var users []model.User
-	err = sourceStorage.MigrateDataBatches(destStorage, &users, 5)
-	if err != nil {
-		log.Fatal().Err(err).Send()
-	}
+	err = sourceStorage.MigrateDataBatches(destStorage, &users, 2)
+	assert.NoError(t, err)
 }
